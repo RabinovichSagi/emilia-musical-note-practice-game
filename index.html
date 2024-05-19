@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musical Note Practice Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        img {
+            width: 200px;
+            height: 200px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .correct {
+            background-color: #c8e6c9;
+        }
+        .incorrect {
+            background-color: #ffcdd2;
+        }
+        .sticker {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+        .pop-up {
+            transform: scale(1.5);
+            opacity: 1;
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        .wiggle {
+            animation: wiggle 0.2s ease-in-out 5;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            animation: confetti-fall 1s ease-in-out;
+        }
+        @keyframes confetti-fall {
+            0% { opacity: 1; transform: translateY(0) translateX(0); }
+            100% { opacity: 0; transform: translateY(300px) translateX(50px); }
+        }
+        #stickers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            position: relative;
+        }
+        #confetti-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Musical Note Practice Game</h1>
+    <div id="game">
+        <img id="note-image" src="" alt="Musical Note">
+        <div id="options"></div>
+        <p id="result"></p>
+        <p id="score">Correct: 0 | Incorrect: 0</p>
+    </div>
+    <div id="stickers">
+        <div id="confetti-container"></div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
