@@ -86,7 +86,7 @@ function checkAnswer(option, button) {
     }
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
     
-    if (correctCount % 3 === 0) {
+    if (correctCount % 5 === 0) {
         rewardSticker();
     }
     
