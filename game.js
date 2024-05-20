@@ -17,6 +17,7 @@ const notes = [
 
 let currentNote = null;
 let correctCount = 0;
+let stickerCount = 0;
 let incorrectCount = 0;
 let startTime = null;
 
@@ -86,7 +87,8 @@ function checkAnswer(option, button) {
     }
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
     
-    if (correctCount % 5 === 0) {
+    if (correctCount % 5 === 0 && correctCount > 0 && correctCount !== stickerCount) {
+        stickerCount = correctCount
         rewardSticker();
     }
     
