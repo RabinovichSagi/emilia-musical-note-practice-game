@@ -1,19 +1,16 @@
-
-
 const stickers = [
     '00.png', '01.png','02.png', '03.png','04.png', '05.png',
     '06.png'
 ];
 const notes = [
-    { name: 'c', hebrew: 'דו', score: Math.random() },
-    { name: 'd', hebrew: 'רה', score: Math.random() },
-    { name: 'e', hebrew: 'מי', score: Math.random() },
-    { name: 'f', hebrew: 'פה', score: Math.random() },
-    { name: 'g', hebrew: 'סול', score: Math.random() },
-    { name: 'a', hebrew: 'לה', score: Math.random() },
-    { name: 'b', hebrew: 'סי', score: Math.random() }
+    { name: 'c', hebrew: 'דו' },
+    { name: 'd', hebrew: 'רה' },
+    { name: 'e', hebrew: 'מי' },
+    { name: 'f', hebrew: 'פה' },
+    { name: 'g', hebrew: 'סול' },
+    { name: 'a', hebrew: 'לה' },
+    { name: 'b', hebrew: 'סי' }
 ];
-
 
 let currentNote = null;
 let correctCount = 0;
@@ -28,6 +25,21 @@ const scoreP = document.getElementById('score');
 const stickersDiv = document.getElementById('stickers');
 const confettiContainer = document.getElementById('confetti-container');
 
+// Initialize scores and skills from local storage or set default values
+function initializeScores() {
+    notes.forEach(note => {
+        const storedScore = localStorage.getItem(`score_${note.name}`);
+        note.score = storedScore ? parseFloat(storedScore) : Math.random();
+    });
+}
+
+// Save scores and counts to local storage
+function saveScores() {
+    notes.forEach(note => {
+        localStorage.setItem(`score_${note.name}`, note.score);
+    });
+}
+
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -36,7 +48,6 @@ function shuffle(array) {
 }
 
 function pickRandomNote() {
-    console.log('notes', notes);
     notes.sort((a, b) => a.score - b.score);
     const leastKnownNotes = notes.slice(0, 3);
     return leastKnownNotes[Math.floor(Math.random() * leastKnownNotes.length)];
@@ -72,7 +83,6 @@ function checkAnswer(option, button) {
     const timeTaken = (new Date() - startTime) / 1000;
     const buttons = optionsDiv.querySelectorAll('button');
 
-    console.log('options', options);
     buttons.forEach(btn => btn.classList.add('disabled'));
     if (option.name === currentNote.name) {
         correctCount++;
@@ -88,10 +98,13 @@ function checkAnswer(option, button) {
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
     
     if (correctCount % 5 === 0 && correctCount > 0 && correctCount !== stickerCount) {
-        stickerCount = correctCount
+        stickerCount = correctCount;
         rewardSticker();
     }
-    
+
+    // Save scores and counts to local storage
+    saveScores();
+
     setTimeout(() => {
         buttons.forEach(btn => {
             btn.classList.remove('correct', 'incorrect', 'disabled');
@@ -141,4 +154,6 @@ function launchConfetti(stickerImg) {
     }
 }
 
+// Initialize scores from local storage and start the game
+initializeScores();
 displayNote();
