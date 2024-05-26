@@ -3,13 +3,13 @@ const stickers = [
     '06.png'
 ];
 const notes = [
-    { name: 'c', hebrew: 'דו' },
+    // { name: 'c', hebrew: 'דו' },
     { name: 'd', hebrew: 'רה' },
     { name: 'e', hebrew: 'מי' },
     { name: 'f', hebrew: 'פה' },
-    { name: 'g', hebrew: 'סול' },
+    // { name: 'g', hebrew: 'סול' },
     { name: 'a', hebrew: 'לה' },
-    { name: 'b', hebrew: 'סי' }
+    // { name: 'b', hebrew: 'סי' }
 ];
 
 let currentNote = null;
