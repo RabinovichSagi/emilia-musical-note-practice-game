@@ -81,9 +81,10 @@ function displayNote() {
 
 function checkAnswer(option, button) {
     const timeTaken = (new Date() - startTime) / 1000;
-    const buttons = optionsDiv.querySelectorAll('button');
 
+    const buttons = optionsDiv.querySelectorAll('button');
     buttons.forEach(btn => btn.classList.add('disabled'));
+
     if (option.name === currentNote.name) {
         correctCount++;
         option.score += 1;
@@ -108,9 +109,18 @@ function checkAnswer(option, button) {
     setTimeout(() => {
         buttons.forEach(btn => {
             btn.classList.remove('correct', 'incorrect', 'disabled');
+            btn.classList.add('hidden');
+            noteImage.classList.add('hidden');
         });
-        displayNote();
-    }, 2000);
+
+        setTimeout(() => {
+            buttons.forEach(btn => {
+                btn.classList.remove('hidden');
+            });
+            noteImage.classList.remove('hidden');
+            displayNote();
+        }, 500);
+    }, 1000);
 }
 
 function rewardSticker() {
