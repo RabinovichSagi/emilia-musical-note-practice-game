@@ -1,5 +1,5 @@
 const stickers = [
-    '00.png', '01.png','02.png', '03.png','04.png', '05.png',
+    '00.png', '01.png', '02.png', '03.png', '04.png', '05.png',
     '06.png'
 ];
 const notes = [
@@ -18,7 +18,7 @@ let stickerCount = 0;
 let incorrectCount = 0;
 let startTime = null;
 
-const noteImage = document.getElementById('note-image');
+const noteNameP = document.getElementById('note-name');
 const optionsDiv = document.getElementById('options');
 const resultP = document.getElementById('result');
 const scoreP = document.getElementById('score');
@@ -26,8 +26,9 @@ const stickersDiv = document.getElementById('stickers');
 const confettiContainer = document.getElementById('confetti-container');
 
 function getNoteKeyInStorage(note){
-    return `name-to-symbol__score_${note.name}`;
+    return `symbol-to-name__score_${note.name}`;
 }
+
 
 // Initialize scores and skills from local storage or set default values
 function initializeScores() {
@@ -58,26 +59,43 @@ function pickRandomNote() {
     return leastKnownNotes[Math.floor(Math.random() * leastKnownNotes.length)];
 }
 
-function displayNote() {
-    currentNote = pickRandomNote();
-    noteImage.src = `images/${currentNote.name}.png`;
-    noteImage.alt = currentNote.hebrew;
-
-    const options = [currentNote];
-    while (options.length < 3) {
-        const randomNote = notes[Math.floor(Math.random() * notes.length)];
-        if (!options.includes(randomNote)) {
-            options.push(randomNote);
-        }
+function findClosestNotes(note) {
+    const index = notes.findIndex(n => n.name === note.name);
+    if (index< 0){
+        throw new Error('Did not find note ' + note.name);
     }
+    console.log('index: ', index);
+    const closestNotes = [];
+    if (index > 0) {
+        closestNotes.push(notes[index - 1]);
+    } else {
+        closestNotes.push(notes[index + 2]);
+    }
+
+    if (index < notes.length - 1) {
+        closestNotes.push(notes[index + 1]);
+    } else {
+        closestNotes.push(notes[index - 2]);
+    }
+    return closestNotes;
+}
+
+function displayNoteName() {
+    currentNote = pickRandomNote();
+    noteNameP.textContent = currentNote.hebrew;
+
+    const closestNotes = findClosestNotes(currentNote);
+    const options = [currentNote, ...closestNotes];
 
     shuffle(options);
 
     optionsDiv.innerHTML = '';
     options.forEach(option => {
-        const button = document.createElement('button');
-        button.textContent = option.hebrew;
+        const button = document.createElement('img');
+        button.src = `images/${option.name}.png`;
+        button.alt = option.hebrew;
         button.onclick = () => checkAnswer(option, button);
+        button.classList.add('sticker');
         optionsDiv.appendChild(button);
     });
 
@@ -87,18 +105,18 @@ function displayNote() {
 function checkAnswer(option, button) {
     const timeTaken = (new Date() - startTime) / 1000;
 
-    const buttons = optionsDiv.querySelectorAll('button');
+    const buttons = optionsDiv.querySelectorAll('img');
     buttons.forEach(btn => btn.classList.add('disabled'));
 
     if (option.name === currentNote.name) {
         correctCount++;
         option.score += 1;
-        button.classList.add('correct');
+        button.classList.add('correct-border');
         resultP.textContent = `Correct! Time: ${timeTaken.toFixed(2)} seconds.`;
     } else {
         incorrectCount++;
         option.score -= 1;
-        button.classList.add('incorrect');
+        button.classList.add('incorrect-border');
         resultP.textContent = `Incorrect! Time: ${timeTaken.toFixed(2)} seconds.`;
     }
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
@@ -113,17 +131,15 @@ function checkAnswer(option, button) {
 
     setTimeout(() => {
         buttons.forEach(btn => {
-            btn.classList.remove('correct', 'incorrect', 'disabled');
+            btn.classList.remove('correct-border', 'incorrect-border', 'disabled');
             btn.classList.add('hidden');
-            noteImage.classList.add('hidden');
         });
 
         setTimeout(() => {
             buttons.forEach(btn => {
                 btn.classList.remove('hidden');
             });
-            noteImage.classList.remove('hidden');
-            displayNote();
+            displayNoteName();
         }, 500);
     }, 1000);
 }
@@ -136,11 +152,11 @@ function rewardSticker() {
     stickersDiv.appendChild(stickerImg);
 
     setTimeout(() => {
-        stickerImg.classList.add('pop-up', 'wiggle');
+        stickerImg.classList.add('pop-up');
     }, 100);
 
     setTimeout(() => {
-        stickerImg.classList.remove('pop-up', 'wiggle');
+        stickerImg.classList.remove('pop-up');
     }, 1000);
 
     launchConfetti(stickerImg);
@@ -171,4 +187,4 @@ function launchConfetti(stickerImg) {
 
 // Initialize scores from local storage and start the game
 initializeScores();
-displayNote();
+displayNoteName();
