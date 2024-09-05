@@ -72,6 +72,16 @@
             border-color: red;
             opacity: 1;
         }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            padding: 10px;
+            border: 1px solid black;
+        }
     </style>
 </head>
 <body dir="rtl">
@@ -85,6 +95,13 @@
     <div id="stickers">
         <div id="confetti-container"></div>
     </div>
+
+    <!-- Add a summary table for notes and their scores -->
+    <table id="summary-table">
+        <tr id="note-headers"></tr>
+        <tr id="note-scores"></tr>
+    </table>
+
     <script src="name-to-symbol.js"></script>
 </body>
 </html>
