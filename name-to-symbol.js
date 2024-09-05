@@ -27,6 +27,10 @@ const confettiContainer = document.getElementById('confetti-container');
 const noteHeadersRow = document.getElementById('note-headers');
 const noteScoresRow = document.getElementById('note-scores');
 
+// Audio elements for correct and wrong answers
+const rightSound = document.getElementById('right-sound');
+const wrongSound = document.getElementById('wrong-sound');
+
 function getNoteKeyInStorage(note){
     return `symbol-to-name__score_${note.name}`;
 }
@@ -118,11 +122,14 @@ function checkAnswer(option, button) {
         option.score += 1;
         button.classList.add('correct-border');
         resultP.textContent = `Correct! Time: ${timeTaken.toFixed(2)} seconds.`;
+        rightSound.play();  // Play correct answer sound
+
     } else {
         incorrectCount++;
         option.score -= 1;
         button.classList.add('incorrect-border');
         resultP.textContent = `Incorrect! Time: ${timeTaken.toFixed(2)} seconds.`;
+        wrongSound.play();  // Play incorrect answer sound
     }
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
 
