@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Addition and Subtraction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .correct {
+            background-color: #c8e6c9;
+        }
+        .incorrect {
+            background-color: #ffcdd2;
+        }
+        #options {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            width: 50px;
+        }
+        table {
+            margin: 20px auto;
+            border-spacing: 10px;
+        }
+        td, th {
+            padding: 2px; 
+            width: 100px;
+        }
+        #score-table {
+            width: 30%;
+            margin-top: 20px;
+        }
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        #avatar {
+            width: 70px;
+        }
+    </style>
+</head>
+<body dir="rtl">
+    <div id="header">
+        <h1>תרגול חיבור וחיסור</h1>
+        <img id="avatar" src="images/little-mermaid.jpeg" alt="Little Mermaid">
+    </div>
+    
+    <div id="game" dir="ltr">
+        <h2 id="exercise">_</h2>
+        <div id="options"></div>
+        <p id="result"></p>
+        <p id="score">Correct: 0 | Incorrect: 0</p>
+    </div>
+
+    <!-- Table to display individual scores for each exercise -->
+    <table  dir="ltr" id="score-table">
+        <thead>
+            <tr>
+                <th>Exercise</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody id="score-table-body">
+            <!-- Scores will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <!-- Preload the audio files -->
+    <audio id="right-sound" src="audio/right.mp3" preload="auto"></audio>
+    <audio id="wrong-sound" src="audio/wrong.mp3" preload="auto"></audio>
+
+    <script src="math-game.js"></script>
+</body>
+</html>
