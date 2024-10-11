@@ -12,6 +12,12 @@ for (let a = 0; a <= 10; a++) {
     }
 }
 
+
+// Play the audio for a given number
+function playNumberAudio(number) {
+    document.getElementById(`sound-number-${number}`).play();
+}
+
 // Method to reset all scores
 function resetScore() {
     exercises.forEach(exercise => {
@@ -31,7 +37,7 @@ let correctCount = 0;
 let incorrectCount = 0;
 let startTime = null;
 let countdownTimer = null;
-let timeLimit = 7; 
+let timeLimit = 11; 
 
 // Get the time limit from query parameters
 const urlParams = new URLSearchParams(window.location.search);
@@ -258,7 +264,8 @@ function checkAnswer(option, button) {
         currentExercise.score = Math.max(-5, currentExercise.score - 1); // lower bound the score
         button.classList.add('incorrect');
         resultP.textContent = `Incorrect! The correct answer was ${correctResult}. Time: ${timeTaken.toFixed(2)} seconds.`;
-        wrongSound.play();
+        // wrongSound.play();
+        playNumberAudio(correctResult);  // Play audio for the correct answer
 
         // Highlight the correct answer in green
         buttons.forEach(btn => {
@@ -313,7 +320,8 @@ function handleTimeOut() {
     currentExercise.score -= 1;
     resultP.textContent = `Time's up! The correct answer was ${correctResult}.`;
     optionsDiv.querySelector('table').style.border = '2px solid red'; // Set red border on the table
-    wrongSound.play();
+    // wrongSound.play();
+    playNumberAudio(correctResult); 
 
     // Update the exercise display to show the correct answer
     const operationSymbol = operation === 'add' ? '+' : '-';
