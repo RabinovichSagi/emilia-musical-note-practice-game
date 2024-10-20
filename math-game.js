@@ -211,7 +211,7 @@ function displayExercise() {
     } while (newExerciseText === previousExerciseText); // Ensure the new exercise is different from the previous one
 
     currentExercise = newExercise;
-    //displayAsGraph = !displayAsGraph; // Alternate between representations
+    displayAsGraph = !displayAsGraph; // Alternate between representations
 
     // Generate the number pad with all options from 0 to 20
     generateNumberPad();
@@ -219,26 +219,31 @@ function displayExercise() {
 
     startTime = new Date();
 }
-
-function generateGraphHtml(a, b, operation) {
-    let rootValue = operation === 'add' ? "?" : a;
-    let leftChild = a;
-    let rightChild = operation === 'add' ? b : "?";
+function generateGraphHtml(a, b, operation, showAnswer) {
+    const answer = showAnswer ? ('add' ? a+b : a-b) : " ";
+    const rootValue = operation === 'add' ? answer : a;
+    const leftChild = operation === 'add' ? a : b;
+    const rightChild = operation === 'add' ? b : answer;
     
     return `
-        <div class="graph-container" style="display: flex; flex-direction: column; align-items: center;">
-            <div class="root-node" style="border: 2px solid black; border-radius: 50%; padding: 20px; margin-bottom: 20px;">${rootValue}</div>
-            <div class="child-nodes" style="display: flex; gap: 40px;">
-                <div class="child-node" style="border: 2px solid black; border-radius: 50%; padding: 20px;">${leftChild}</div>
-                <div class="child-node" style="border: 2px solid black; border-radius: 50%; padding: 20px;">${rightChild}</div>
-            </div>
-            <div class="edges" style="position: relative; width: 100%; height: 50px;">
-                <div style="position: absolute; width: 2px; height: 50px; background: black; left: 45%;"></div>
-                <div style="position: absolute; width: 2px; height: 50px; background: black; left: 55%;"></div>
-            </div>
+        <div class="tree">
+            <ul>
+                <li>
+                    <a href="#">${rootValue}</a>
+                    <ul>
+                        <li>
+                            <a href="#">${leftChild}</a>
+                        </li>
+                        <li>
+                            <a href="#">${rightChild}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     `;
 }
+
 function generateNumberPad() {
     optionsDiv.innerHTML = ''; // Clear any existing options
 
@@ -300,7 +305,14 @@ function checkAnswer(option, button) {
 
         // Update the exercise display to show the correct answer
         const operationSymbol = operation === 'add' ? '+' : '-';
-        exerciseP.textContent = `${a} ${operationSymbol} ${b} = ${correctResult}`;
+        if (displayAsGraph) { 
+            const graphHtml = generateGraphHtml(a, b, operation, true);
+            exerciseP.innerHTML = graphHtml;
+        }
+        else {
+            exerciseP.textContent = `${a} ${operationSymbol} ${b} = ${correctResult}`;
+        }
+        
     }
 
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
@@ -348,8 +360,15 @@ function handleTimeOut() {
     playNumberAudio(correctResult); 
 
     // Update the exercise display to show the correct answer
-    const operationSymbol = operation === 'add' ? '+' : '-';
-    exerciseP.textContent = `${a} ${operationSymbol} ${b} = ${correctResult}`;
+    if (displayAsGraph) { 
+        const graphHtml = generateGraphHtml(a, b, operation, true);
+        exerciseP.innerHTML = graphHtml;
+    }
+    else {
+        const operationSymbol = operation === 'add' ? '+' : '-';
+        exerciseP.textContent = `${a} ${operationSymbol} ${b} = ${correctResult}`;
+    }
+    
 
     scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
     saveProgress();

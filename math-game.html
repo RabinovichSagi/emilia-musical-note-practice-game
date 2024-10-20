@@ -46,9 +46,9 @@
             border: 2px solid red;
         }
         #timer {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: #e66ccb;
         }
         #exercise {
@@ -76,6 +76,69 @@
         #avatar {
             width: 70px;
         }
+
+    .tree ul {
+        position: relative;
+        padding: 1em 0;
+        white-space: nowrap;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .tree li {
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        list-style-type: none;
+        position: relative;
+        padding: 1em .5em 0 .5em;
+    }
+    
+    .tree li::before,
+    .tree li::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 50%;
+        border-top: 1px solid #ccc;
+        width: 50%;
+        height: 1em;
+    }
+    
+    .tree li::after {
+        right: auto;
+        left: 50%;
+        border-left: 1px solid #ccc;
+    }
+    
+    .tree li:only-child::after,
+    .tree li:only-child::before {
+        display: none;
+    }
+    
+    .tree li:only-child {
+        padding-top: 0;
+    }
+    
+    .tree li:first-child::before,
+    .tree li:last-child::after {
+        border: 0 none;
+    }
+    
+    .tree li a {
+        border: 1px solid #ccc;
+        padding: .2em .2em;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 100px;
+        color: #333;
+        position: relative;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        align-items: center;
+    }
+    
     </style>
 </head>
 <body dir="rtl">
@@ -132,7 +195,7 @@
     <audio id="sound-number-18" src="audio/numbers/number_18.ogg" preload="auto"></audio>
     <audio id="sound-number-19" src="audio/numbers/number_19.ogg" preload="auto"></audio>
     <audio id="sound-number-20" src="audio/numbers/number_20.ogg" preload="auto"></audio>
-    
+
     <script src="math-game.js"></script>
 </body>
 </html>
