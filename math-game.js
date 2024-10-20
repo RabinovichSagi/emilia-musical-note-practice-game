@@ -38,6 +38,7 @@ let incorrectCount = 0;
 let startTime = null;
 let countdownTimer = null;
 let timeLimit = 11; 
+let displayAsGraph = true; // Flag to alternate between the representations
 
 // Get the time limit from query parameters
 const urlParams = new URLSearchParams(window.location.search);
@@ -192,21 +193,25 @@ function pickRandomExercise() {
 
 function displayExercise() {
     let newExercise;
-    let previousExerciseText = exerciseP.textContent; // Get the previous exercise
+    let previousExerciseText = exerciseP.textContent; // Get the previous exercise text representation
 
+    let newExerciseText;
     do {
         newExercise = pickProgressiveExercise(); // Generate a new exercise
         const { a, b, operation } = newExercise;
-        const operationSymbol = operation === 'add' ? '+' : '-';
-        const newExerciseText = `${a} ${operationSymbol} ${b} = __`;
-
-        // Only assign if it's different from the previous one
-        if (newExerciseText !== previousExerciseText) {
-            currentExercise = newExercise;
+        if (displayAsGraph) {
+            const graphHtml = generateGraphHtml(a, b, operation);
+            exerciseP.innerHTML = graphHtml;
+            newExerciseText = `${a}_${b}_${operation}_graph`; // Unique representation for graph mode
+        } else {
+            const operationSymbol = operation === 'add' ? '+' : '-';
+            newExerciseText = `${a} ${operationSymbol} ${b} = __`;
             exerciseP.textContent = newExerciseText;
-            break;
         }
-    } while (true); // Loop until a different exercise is found
+    } while (newExerciseText === previousExerciseText); // Ensure the new exercise is different from the previous one
+
+    currentExercise = newExercise;
+    //displayAsGraph = !displayAsGraph; // Alternate between representations
 
     // Generate the number pad with all options from 0 to 20
     generateNumberPad();
@@ -215,6 +220,25 @@ function displayExercise() {
     startTime = new Date();
 }
 
+function generateGraphHtml(a, b, operation) {
+    let rootValue = operation === 'add' ? "?" : a;
+    let leftChild = a;
+    let rightChild = operation === 'add' ? b : "?";
+    
+    return `
+        <div class="graph-container" style="display: flex; flex-direction: column; align-items: center;">
+            <div class="root-node" style="border: 2px solid black; border-radius: 50%; padding: 20px; margin-bottom: 20px;">${rootValue}</div>
+            <div class="child-nodes" style="display: flex; gap: 40px;">
+                <div class="child-node" style="border: 2px solid black; border-radius: 50%; padding: 20px;">${leftChild}</div>
+                <div class="child-node" style="border: 2px solid black; border-radius: 50%; padding: 20px;">${rightChild}</div>
+            </div>
+            <div class="edges" style="position: relative; width: 100%; height: 50px;">
+                <div style="position: absolute; width: 2px; height: 50px; background: black; left: 45%;"></div>
+                <div style="position: absolute; width: 2px; height: 50px; background: black; left: 55%;"></div>
+            </div>
+        </div>
+    `;
+}
 function generateNumberPad() {
     optionsDiv.innerHTML = ''; // Clear any existing options
 
