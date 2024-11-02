@@ -37,8 +37,10 @@ let correctCount = 0;
 let incorrectCount = 0;
 let startTime = null;
 let countdownTimer = null;
-let timeLimit = 11; 
-let displayAsGraph = true; // Flag to alternate between the representations
+let timeLimit = 1100; 
+let displayAsGraph = false; // Flag to alternate between the representations
+const delayBeforeNextExcerciseOnWrong = 3500
+const delayBeforeNextExcerciseOnCorrect = 1000
 
 // Get the time limit from query parameters
 const urlParams = new URLSearchParams(window.location.search);
@@ -192,6 +194,8 @@ function pickRandomExercise() {
 }
 
 function displayExercise() {
+    displayAsGraph = !displayAsGraph; // Alternate between representations
+
     let newExercise;
     let previousExerciseText = exerciseP.textContent; // Get the previous exercise text representation
 
@@ -210,17 +214,18 @@ function displayExercise() {
         }
     } while (newExerciseText === previousExerciseText); // Ensure the new exercise is different from the previous one
 
+    adjustedTimeLimit = displayAsGraph ? Math.floor(timeLimit *1.3):timeLimit;
     currentExercise = newExercise;
-    displayAsGraph = !displayAsGraph; // Alternate between representations
 
     // Generate the number pad with all options from 0 to 20
     generateNumberPad();
-    startTimer(timeLimit); // Start the timer
+    startTimer(adjustedTimeLimit); // Start the timer
 
     startTime = new Date();
 }
+
 function generateGraphHtml(a, b, operation, showAnswer) {
-    const answer = showAnswer ? ('add' ? a+b : a-b) : " ";
+    const answer = operation === 'add' ? a + b : a - b;
     const rootValue = operation === 'add' ? answer : a;
     const leftChild = operation === 'add' ? a : b;
     const rightChild = operation === 'add' ? b : answer;
@@ -229,13 +234,13 @@ function generateGraphHtml(a, b, operation, showAnswer) {
         <div class="tree">
             <ul>
                 <li>
-                    <a href="#">${rootValue}</a>
+                    <a href="#" ${operation === 'add' && !showAnswer ? 'class="hide-answer"' : ''}>${rootValue}</a>
                     <ul>
                         <li>
                             <a href="#">${leftChild}</a>
                         </li>
                         <li>
-                            <a href="#">${rightChild}</a>
+                            <a href="#" ${operation !== 'add' && !showAnswer ? 'class="hide-answer"' : ''}>${rightChild}</a>
                         </li>
                     </ul>
                 </li>
@@ -320,7 +325,7 @@ function checkAnswer(option, button) {
     saveScores();
     updateScoreTable();  // Update the score table after each answer
 
-    timeToWait = isCorrectAnswer ? 1000 : 3000;
+    timeToWait = isCorrectAnswer ? delayBeforeNextExcerciseOnCorrect : delayBeforeNextExcerciseOnWrong;
     setTimeout(() => {
         buttons.forEach(btn => btn.classList.remove('correct', 'incorrect', 'disabled'));
         displayExercise(); // Move to the next question
@@ -379,7 +384,7 @@ function handleTimeOut() {
         buttons.forEach(btn => btn.classList.remove('correct', 'incorrect', 'disabled')); // Remove button styles
         optionsDiv.querySelector('table').style.border = ''; // Remove red border
         displayExercise(); // Move to the next question
-    }, 3000);  // Delay a bit longer to give user time to see the correct answer
+    }, delayBeforeNextExcerciseOnWrong);  // Delay a bit longer to give user time to see the correct answer
 }
 
 // Function to update the score table
