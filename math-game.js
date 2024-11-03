@@ -70,7 +70,8 @@ const incorrectCountKey = 'math_game_incorrect_count';
 function loadProgress() {
     correctCount = parseInt(localStorage.getItem(correctCountKey)) || 0;
     incorrectCount = parseInt(localStorage.getItem(incorrectCountKey)) || 0;
-    scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
+    const skill = correctCount - incorrectCount;
+    scoreP.textContent = `Skill: ${skill} | Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
 }
 
 // Save correct/incorrect count to localStorage
@@ -295,7 +296,7 @@ function checkAnswer(option, button) {
         rightSound.play();  // Play correct answer sound
     } else {
         incorrectCount++;
-        currentExercise.score = Math.max(-5, currentExercise.score - 1); // lower bound the score
+        currentExercise.score = Math.max(-3, currentExercise.score - 1); // lower bound the score
         button.classList.add('incorrect');
         resultP.textContent = `Incorrect! The correct answer was ${correctResult}. Time: ${timeTaken.toFixed(2)} seconds.`;
         // wrongSound.play();
@@ -320,7 +321,8 @@ function checkAnswer(option, button) {
         
     }
 
-    scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
+    const skill = correctCount - incorrectCount;
+    scoreP.textContent = `Skill: ${skill} | Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
 
     saveScores();
     updateScoreTable();  // Update the score table after each answer
@@ -374,8 +376,9 @@ function handleTimeOut() {
         exerciseP.textContent = `${a} ${operationSymbol} ${b} = ${correctResult}`;
     }
     
+    const skill = correctCount - incorrectCount;
+    scoreP.textContent = `Skill: ${skill} | Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
 
-    scoreP.textContent = `Correct: ${correctCount} | Incorrect: ${incorrectCount}`;
     saveProgress();
     saveScores();
     updateScoreTable();
