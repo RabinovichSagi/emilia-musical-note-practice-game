@@ -63,12 +63,17 @@
             width: 60px;
             height: 60px;
         }
+        .coin-2 {
+            width: 55px;
+            height: 55px;
+        }
         .coin-1 {
             width: 50px;
             height: 50px;
         }
         .answer {
             margin-top: 10px;
+            font-size: 24px;
         }
         .check-button {
             margin-top: 10px;
@@ -149,9 +154,11 @@
             while (remainingValue > 0) {
                 let coinValue;
                 if (remainingValue >= 10) {
-                    coinValue = [10, 5, 1][Math.floor(Math.random() * 3)];
+                    coinValue = [10, 5, 2, 1][Math.floor(Math.random() * 4)];
                 } else if (remainingValue >= 5) {
-                    coinValue = [5, 1][Math.floor(Math.random() * 2)];
+                    coinValue = [5, 2, 1][Math.floor(Math.random() * 3)];
+                } else if (remainingValue >= 2) {
+                    coinValue = [2, 1][Math.floor(Math.random() * 2)];
                 } else {
                     coinValue = 1;
                 }
@@ -182,19 +189,24 @@
             answerInput.classList.add('answer');
             answerInput.placeholder = 'Your answer';
 
+            let lastCheckedAnswer = null;
+
             const checkButton = document.createElement('button');
             checkButton.textContent = 'Check';
             checkButton.classList.add('check-button');
             checkButton.addEventListener('click', () => {
                 const userAnswer = parseInt(answerInput.value, 10);
-                if (userAnswer === totalValue) {
-                    checkButton.style.backgroundColor = 'green';
-                    correctCount++;
-                } else {
-                    checkButton.style.backgroundColor = 'red';
-                    mistakeCount++;
+                if (userAnswer !== lastCheckedAnswer) {
+                    lastCheckedAnswer = userAnswer;
+                    if (userAnswer === totalValue) {
+                        checkButton.style.backgroundColor = 'green';
+                        correctCount++;
+                    } else {
+                        checkButton.style.backgroundColor = 'red';
+                        mistakeCount++;
+                    }
+                    updateScore();
                 }
-                updateScore();
             });
 
             exerciseDiv.appendChild(answerInput);
@@ -217,7 +229,7 @@
             // Create available coins to select
             const coinsDiv = document.createElement('div');
             coinsDiv.classList.add('coins');
-            const coinValues = [10, 5, 1];
+            const coinValues = [10, 5, 2, 1];
             const selectedCoinsDiv = document.createElement('div');
             selectedCoinsDiv.classList.add('selected-coins-box');
 
@@ -255,19 +267,24 @@
             exerciseDiv.appendChild(coinsDiv);
             exerciseDiv.appendChild(selectedCoinsDiv);
 
+            let lastCheckedValue = null;
+
             const approveButton = document.createElement('button');
             approveButton.textContent = 'Approve';
             approveButton.classList.add('check-button');
             approveButton.addEventListener('click', () => {
                 const currentValue = selectedValues.reduce((a, b) => a + b, 0);
-                if (currentValue === totalValue) {
-                    approveButton.style.backgroundColor = 'green';
-                    correctCount++;
-                } else {
-                    approveButton.style.backgroundColor = 'red';
-                    mistakeCount++;
+                if (currentValue !== lastCheckedValue) {
+                    lastCheckedValue = currentValue;
+                    if (currentValue === totalValue) {
+                        approveButton.style.backgroundColor = 'green';
+                        correctCount++;
+                    } else {
+                        approveButton.style.backgroundColor = 'red';
+                        mistakeCount++;
+                    }
+                    updateScore();
                 }
-                updateScore();
             });
 
             exerciseDiv.appendChild(approveButton);
