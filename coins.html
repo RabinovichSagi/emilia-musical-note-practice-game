@@ -229,7 +229,7 @@
             // Create available coins to select
             const coinsDiv = document.createElement('div');
             coinsDiv.classList.add('coins');
-            const coinValues = [10, 5, 2, 1];
+            const coinValues = Math.random() > 0.5 ? [10, 5, 2, 1] : [10, 5, 1];
             const selectedCoinsDiv = document.createElement('div');
             selectedCoinsDiv.classList.add('selected-coins-box');
 
