@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Worksheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .worksheet {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .exercise {
+            flex-direction: column;
+            display: flex;
+            border: 1px solid #c8c8c8;
+            padding: 20px;
+            text-align: center;
+        }
+        .coins {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .coin {
+            border: 2px solid #000;
+            position: relative;
+            border-radius: 50%;
+            background-color: white;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+        }
+        .coin-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .coin-10 {
+            width: 70px;
+            height: 70px;
+        }
+        .coin-5 {
+            width: 60px;
+            height: 60px;
+        }
+        .coin-1 {
+            width: 50px;
+            height: 50px;
+        }
+        .answer {
+            margin-top: 10px;
+        }
+        .check-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Worksheet - Counting Coins</h1>
+    <div class="worksheet" id="worksheet"></div>
+
+    <script>
+        function generateWorksheet() {
+            const worksheet = document.getElementById('worksheet');
+            for (let i = 0; i < 15; i++) { // Generate 15 exercises
+                const exerciseDiv = document.createElement('div');
+                exerciseDiv.classList.add('exercise');
+                
+                const coinsDiv = document.createElement('div');
+                coinsDiv.classList.add('coins');
+
+                const totalValue = Math.floor(Math.random() * 30) + 1;
+                let remainingValue = totalValue;
+                let coinValues = [];
+                
+                while (remainingValue > 0) {
+                    let coinValue;
+                    if (remainingValue >= 10) {
+                        coinValue = [10, 5, 1][Math.floor(Math.random() * 3)];
+                    } else if (remainingValue >= 5) {
+                        coinValue = [5, 1][Math.floor(Math.random() * 2)];
+                    } else {
+                        coinValue = 1;
+                    }
+                    if (coinValue <= remainingValue) {
+                        remainingValue -= coinValue;
+                        coinValues.push(coinValue);
+                    }
+                }
+
+                // Sort coins by value in descending order
+                coinValues.sort((a, b) => b - a);
+
+                // Create coin elements
+                coinValues.forEach(value => {
+                    const coinDiv = document.createElement('div');
+                    coinDiv.classList.add('coin', `coin-${value}`);
+                    const coinInnerDiv = document.createElement('div');
+                    coinInnerDiv.classList.add('coin-inner');
+                    coinInnerDiv.textContent = value;
+                    coinDiv.appendChild(coinInnerDiv);
+                    coinsDiv.appendChild(coinDiv);
+                });
+
+                exerciseDiv.appendChild(coinsDiv);
+                
+                const answerInput = document.createElement('input');
+                answerInput.type = 'text';
+                answerInput.classList.add('answer');
+                answerInput.placeholder = 'Your answer';
+
+                const checkButton = document.createElement('button');
+                checkButton.textContent = 'Check';
+                checkButton.classList.add('check-button');
+                checkButton.addEventListener('click', () => {
+                    const userAnswer = parseInt(answerInput.value, 10);
+                    if (userAnswer === totalValue) {
+                        checkButton.style.backgroundColor = 'green';
+                    } else {
+                        checkButton.style.backgroundColor = 'red';
+                    }
+                });
+
+                exerciseDiv.appendChild(answerInput);
+                exerciseDiv.appendChild(checkButton);
+                worksheet.appendChild(exerciseDiv);
+            }
+        }
+
+        generateWorksheet();
+    </script>
+</body>
+</html>
