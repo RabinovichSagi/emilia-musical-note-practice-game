@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problems</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .problem {
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+        .problem p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .problem input {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .problem button {
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .problem .result {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Practice</h1>
+    <div id="problem-container"></div>
+
+    <script type="module">
+        import { templates_bus_drive, templates_grocery_shopping, templates_flower_bed, templates_balloons } from './math-stories.templates.js';
+
+        const templates = [
+            ...templates_bus_drive,
+            ...templates_grocery_shopping,
+            ...templates_flower_bed,
+            ...templates_balloons
+        ];
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateProblem() {
+            const template = templates[Math.floor(Math.random() * templates.length)];
+            const params = Array.from({ length: template.operation.length }, () => getRandomInt(1, 20));
+            const problemText = template.story.replace(/\{(\w+)\}/g, (_, key, index) => params[index]);
+            const correctAnswer = template.operation(...params);
+
+            const problemDiv = document.createElement('div');
+            problemDiv.className = 'problem';
+
+            const storyParagraph = document.createElement('p');
+            storyParagraph.textContent = problemText;
+            problemDiv.appendChild(storyParagraph);
+
+            const inputField = document.createElement('input');
+            inputField.type = 'number';
+            inputField.placeholder = 'Your answer';
+            problemDiv.appendChild(inputField);
+
+            const checkButton = document.createElement('button');
+            checkButton.textContent = 'Check';
+            problemDiv.appendChild(checkButton);
+
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result';
+            problemDiv.appendChild(resultDiv);
+
+            checkButton.addEventListener('click', () => {
+                const userAnswer = parseInt(inputField.value, 10);
+                if (userAnswer === correctAnswer) {
+                    resultDiv.textContent = 'Correct!';
+                    resultDiv.style.color = 'green';
+                } else {
+                    resultDiv.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    resultDiv.style.color = 'red';
+                }
+            });
+
+            return problemDiv;
+        }
+
+        function loadProblems(count) {
+            const container = document.getElementById('problem-container');
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                container.appendChild(generateProblem());
+            }
+        }
+
+        loadProblems(5); // Generate 5 problems on page load
+    </script>
+</body>
+</html>
