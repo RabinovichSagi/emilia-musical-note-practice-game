@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Problems</title>
+    <title>תרגול מתמטיקה</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            direction: rtl;
         }
         .problem {
             margin: 20px auto;
@@ -16,6 +17,7 @@
             width: 80%;
             max-width: 500px;
             border-radius: 8px;
+            text-align: right;
         }
         .problem p {
             font-size: 18px;
@@ -39,20 +41,20 @@
     </style>
 </head>
 <body>
-    <h1>Math Practice</h1>
+    <h1>תרגול מתמטיקה</h1>
     <div id="problem-container"></div>
 
     <script type="module">
-        import { templates_bus_drive, templates_grocery_shopping, templates_flower_bed, templates_balloons } from './math-stories.templates.js';
+        import { templates_bus_drive, templates_grocery_shopping, templates_flower_bed, templates_balloons, templates_new_stories } from './math-stories.templates.js';
 
         const templates = [
             ...templates_bus_drive,
             ...templates_grocery_shopping,
             ...templates_flower_bed,
-            ...templates_balloons
+            ...templates_balloons,
+            ...templates_new_stories
         ];
 
-        // Generate random numbers for each problem type
         function pickNumbers(template) {
             switch (template.type) {
                 case "addition_2":
@@ -74,7 +76,6 @@
             }
         }
 
-        // Specific number generation functions for each type
         function pickForAddition2() {
             const a = getRandomInt(0, 20);
             const b = getRandomInt(0, 20 - a);
@@ -123,12 +124,10 @@
             return [a, b, c];
         }
 
-        // Utility function to generate random integers
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        // Replace placeholders in the story explicitly
         function replacePlaceholders(story, params) {
             return story
                 .replace("{a}", params[0] ?? "")
@@ -137,8 +136,7 @@
                 .replace("{d}", params[3] ?? "");
         }
 
-        // Generate a single problem
-        function generateProblem() {
+        function generateProblem(index) {
             const template = templates[Math.floor(Math.random() * templates.length)];
             const params = pickNumbers(template);
             const problemText = replacePlaceholders(template.story, params);
@@ -148,16 +146,16 @@
             problemDiv.className = 'problem';
 
             const storyParagraph = document.createElement('p');
-            storyParagraph.textContent = problemText;
+            storyParagraph.textContent = `${index}. ${problemText}`;
             problemDiv.appendChild(storyParagraph);
 
             const inputField = document.createElement('input');
             inputField.type = 'number';
-            inputField.placeholder = 'Your answer';
+            inputField.placeholder = 'תשובתך';
             problemDiv.appendChild(inputField);
 
             const checkButton = document.createElement('button');
-            checkButton.textContent = 'Check';
+            checkButton.textContent = 'בדיקה';
             problemDiv.appendChild(checkButton);
 
             const resultDiv = document.createElement('div');
@@ -167,10 +165,10 @@
             checkButton.addEventListener('click', () => {
                 const userAnswer = parseInt(inputField.value, 10);
                 if (userAnswer === correctAnswer) {
-                    resultDiv.textContent = 'Correct!';
+                    resultDiv.textContent = 'נכון!';
                     resultDiv.style.color = 'green';
                 } else {
-                    resultDiv.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    resultDiv.textContent = `לא נכון`;
                     resultDiv.style.color = 'red';
                 }
             });
@@ -178,16 +176,14 @@
             return problemDiv;
         }
 
-        // Load problems into the container
         function loadProblems(count) {
             const container = document.getElementById('problem-container');
             container.innerHTML = '';
-            for (let i = 0; i < count; i++) {
-                container.appendChild(generateProblem());
+            for (let i = 1; i <= count; i++) {
+                container.appendChild(generateProblem(i));
             }
         }
 
-        // Generate problems on page load
         loadProblems(15);
     </script>
 </body>
