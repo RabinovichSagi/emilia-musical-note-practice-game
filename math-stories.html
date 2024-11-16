@@ -52,14 +52,96 @@
             ...templates_balloons
         ];
 
+        // Generate random numbers for each problem type
+        function pickNumbers(template) {
+            switch (template.type) {
+                case "addition_2":
+                    return pickForAddition2();
+                case "addition_3":
+                    return pickForAddition3();
+                case "addition_4":
+                    return pickForAddition4();
+                case "subtraction_2":
+                    return pickForSubtraction2();
+                case "mixed_3":
+                    return pickForMixed3();
+                case "mixed_4":
+                    return pickForMixed4();
+                case "mixed_5":
+                    return pickForMixed5();
+                default:
+                    throw new Error(`Unsupported problem type: ${template.type}`);
+            }
+        }
+
+        // Specific number generation functions for each type
+        function pickForAddition2() {
+            const a = getRandomInt(0, 20);
+            const b = getRandomInt(0, 20 - a);
+            return [a, b];
+        }
+
+        function pickForAddition3() {
+            const a = getRandomInt(0, 20);
+            const b = getRandomInt(0, 20 - a);
+            const c = getRandomInt(0, 20 - a - b);
+            return [a, b, c];
+        }
+
+        function pickForAddition4() {
+            const a = getRandomInt(0, 20);
+            const b = getRandomInt(0, 20 - a);
+            const c = getRandomInt(0, 20 - a - b);
+            const d = getRandomInt(0, 20 - a - b - c);
+            return [a, b, c, d];
+        }
+
+        function pickForSubtraction2() {
+            const a = getRandomInt(1, 20);
+            const b = getRandomInt(0, a);
+            return [a, b];
+        }
+
+        function pickForMixed3() {
+            const a = getRandomInt(0, 20);
+            const b = getRandomInt(0, 20 - a);
+            const c = getRandomInt(0, a + b);
+            return [a, b, c];
+        }
+
+        function pickForMixed4() {
+            const a = getRandomInt(1, 20);
+            const b = getRandomInt(0, a);
+            const c = getRandomInt(0, 20 - (a - b));
+            return [a, b, c];
+        }
+
+        function pickForMixed5() {
+            const a = getRandomInt(1, 20);
+            const b = getRandomInt(0, a);
+            const c = getRandomInt(0, a - b);
+            return [a, b, c];
+        }
+
+        // Utility function to generate random integers
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        // Replace placeholders in the story explicitly
+        function replacePlaceholders(story, params) {
+            return story
+                .replace("{a}", params[0] ?? "")
+                .replace("{b}", params[1] ?? "")
+                .replace("{c}", params[2] ?? "")
+                .replace("{d}", params[3] ?? "");
+        }
+
+        // Generate a single problem
         function generateProblem() {
             const template = templates[Math.floor(Math.random() * templates.length)];
-            const params = Array.from({ length: template.operation.length }, () => getRandomInt(1, 20));
-            const problemText = template.story.replace(/\{(\w+)\}/g, (_, key, index) => params[index]);
+            const params = pickNumbers(template);
+            const problemText = replacePlaceholders(template.story, params);
             const correctAnswer = template.operation(...params);
 
             const problemDiv = document.createElement('div');
@@ -96,6 +178,7 @@
             return problemDiv;
         }
 
+        // Load problems into the container
         function loadProblems(count) {
             const container = document.getElementById('problem-container');
             container.innerHTML = '';
@@ -104,7 +187,8 @@
             }
         }
 
-        loadProblems(5); // Generate 5 problems on page load
+        // Generate problems on page load
+        loadProblems(15);
     </script>
 </body>
 </html>
