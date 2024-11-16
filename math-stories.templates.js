@@ -140,4 +140,136 @@ const templates_balloons = [
   }
 ];
 
-export { templates_bus_drive, templates_grocery_shopping, templates_flower_bed, templates_balloons };
+export const templates_new_stories = [
+  // Variations for "במשחק היו {a} ילדים..."
+  {
+    story: "במשחק היו {a} ילדים. הצטרפו עוד {b} ילדים. כמה ילדים יש עכשיו?",
+    type: "addition_2",
+    operation: (a, b) => a + b,
+  },
+  {
+    story: "במשחק היו {a} ילדים. הצטרפו עוד {b} ילדים ואז הצטרפו עוד {c} ילדים. כמה ילדים יש עכשיו?",
+    type: "addition_3",
+    operation: (a, b, c) => a + b + c,
+  },
+  {
+    story: "במשחק היו {a} ילדים. הצטרפו {b}, ואז עוד {c}, ואז הצטרפו {d}. כמה ילדים יש עכשיו?",
+    type: "addition_4",
+    operation: (a, b, c, d) => a + b + c + d,
+  },
+  {
+    story: "במשחק היו {a} ילדים. עזבו {b} ילדים. כמה נשארו?",
+    type: "subtraction_2",
+    operation: (a, b) => a - b,
+  },
+  {
+    story: "במשחק היו {a} ילדים. הצטרפו {b} ועזבו {c}. כמה נשארו?",
+    type: "mixed_3",
+    operation: (a, b, c) => a + b - c,
+  },
+  {
+    story: "במשחק היו {a} ילדים. עזבו {b}, הצטרפו {c}. כמה ילדים יש עכשיו?",
+    type: "mixed_4",
+    operation: (a, b, c) => a - b + c,
+  },
+  {
+    story: "במשחק היו {a} ילדים. עזבו {b}, ואז עזבו עוד {c}. כמה נשארו?",
+    type: "mixed_5",
+    operation: (a, b, c) => a - b - c,
+  },
+
+  // Variations for "על העץ יש {a} ציפורים..."
+  {
+    story: "על העץ יש {a} ציפורים. הצטרפו עוד {b} ציפורים. כמה ציפורים יש עכשיו?",
+    type: "addition_2",
+    operation: (a, b) => a + b,
+  },
+  {
+    story: "על העץ יש {a} ציפורים. הצטרפו עוד {b} ציפורים, ואז הצטרפו {c}. כמה ציפורים יש עכשיו?",
+    type: "addition_3",
+    operation: (a, b, c) => a + b + c,
+  },
+  {
+    story: "על העץ יש {a} ציפורים. הצטרפו {b}, ואז {c}, ואז {d}. כמה ציפורים יש עכשיו?",
+    type: "addition_4",
+    operation: (a, b, c, d) => a + b + c + d,
+  },
+  {
+    story: "על העץ יש {a} ציפורים. עפו {b}. כמה נשארו?",
+    type: "subtraction_2",
+    operation: (a, b) => a - b,
+  },
+  {
+    story: "על העץ יש {a} ציפורים. הצטרפו {b} ועפו {c}. כמה נשארו?",
+    type: "mixed_3",
+    operation: (a, b, c) => a + b - c,
+  },
+  {
+    story: "על העץ יש {a} ציפורים. עפו {b}, ואז הצטרפו {c}. כמה ציפורים יש עכשיו?",
+    type: "mixed_4",
+    operation: (a, b, c) => a - b + c,
+  },
+  {
+    story: "על העץ יש {a} ציפורים. עפו {b}, ואז עוד {c}. כמה נשארו?",
+    type: "mixed_5",
+    operation: (a, b, c) => a - b - c,
+  },
+
+  // Variations for "בחנות יש {a} תפוחים..."
+  {
+    story: "בחנות יש {a} תפוחים. קנו {b} תפוחים. כמה נשארו?",
+    type: "subtraction_2",
+    operation: (a, b) => a - b,
+  },
+  {
+    story: "בחנות יש {a} תפוחים. הצטרפו עוד {b}. כמה תפוחים יש עכשיו?",
+    type: "addition_2",
+    operation: (a, b) => a + b,
+  },
+  {
+    story: "בחנות יש {a} תפוחים. הצטרפו {b}, ונמכרו {c}. כמה נשארו?",
+    type: "mixed_3",
+    operation: (a, b, c) => a + b - c,
+  },
+  {
+    story: "בחנות יש {a} תפוחים. הצטרפו {b}, ואז נמכרו {c}. כמה נשארו?",
+    type: "mixed_4",
+    operation: (a, b, c) => a - b + c,
+  },
+
+  // Variations for "בשדה יש {a} פרחים..."
+  {
+    story: "בשדה יש {a} פרחים. קטפו {b} פרחים. כמה נשארו?",
+    type: "subtraction_2",
+    operation: (a, b) => a - b,
+  },
+  {
+    story: "בשדה יש {a} פרחים. קטפו {b} פרחים ואז הצטרפו {c} פרחים נוספים. כמה יש עכשיו?",
+    type: "mixed_3",
+    operation: (a, b, c) => a - b + c,
+  },
+  {
+    story: "בשדה יש {a} פרחים. הצטרפו {b}, ואז קטפו {c}. כמה פרחים נשארו?",
+    type: "mixed_4",
+    operation: (a, b, c) => a + b - c,
+  },
+
+  // Variations for "בילדים בכיתה היו {a} שוקולדים..."
+  {
+    story: "בילדים בכיתה היו {a} שוקולדים. חילקו {b} לחברים. כמה נשארו?",
+    type: "subtraction_2",
+    operation: (a, b) => a - b,
+  },
+  {
+    story: "בילדים בכיתה היו {a} שוקולדים. חילקו {b} לחברים וקיבלו {c}. כמה יש עכשיו?",
+    type: "mixed_3",
+    operation: (a, b, c) => a - b + c,
+  },
+  {
+    story: "בילדים בכיתה היו {a} שוקולדים. חילקו {b}, ואז חילקו {c}. כמה נשארו?",
+    type: "mixed_5",
+    operation: (a, b, c) => a - b - c,
+  }
+];
+
+export { templates_new_stories, templates_bus_drive, templates_grocery_shopping, templates_flower_bed, templates_balloons };
